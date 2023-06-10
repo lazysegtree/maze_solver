@@ -28,9 +28,32 @@ function init_btn(){
         set_pt_select_listener();
         cur_pt_val_elem = document.getElementById("end-pt-val");
     };
+
+    // Solve and reset button
+    document.getElementById("reset-btn").onclick = function (){
+        // change the thresh slider to default value
+        // maybe set choosen point A and choosent point B none
+    };
+
 }
 
+
 function init_thresh_selector(){
+    thresh_inp_range.min = 0, thresh_inp_range.max = 255;
+    thresh_inp_num.min = 0, thresh_inp_num.max = 255;
+    thresh_inp_num.value = DEF_THRESH, thresh_inp_range.value = DEF_THRESH;
+
+    thresh_inp_num.addEventListener("input", function(event){
+        //thresh_inp_range.value = event.target.value; // maybe try this
+        thresh_inp_range.value = thresh_inp_num.value;
+        apply_thresh();
+    });
+    
+    thresh_inp_range.addEventListener("input", function(event){
+        //thresh_inp_range.value = event.target.value; // maybe try this
+        thresh_inp_num.value = thresh_inp_range.value;
+        apply_thresh();
+    });
 
 }
 
@@ -56,6 +79,12 @@ function init_file_inp(){
 
             img.onload = function(){
                 main_canvas_ctx.drawImage(img, 0, 0, img.width, img.height);
+                
+                // also create backup of imagedata
+
+                image_data_saved = main_canvas_ctx.getImageData();
+                // apply thresholding
+                apply_thresh();
             }
         });
         reader.readAsDataURL(file);
