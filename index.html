@@ -6,6 +6,47 @@
     <link rel="stylesheet" type="text/css" href="styles.css" />
 </head>
 <body>
+    <div id="header-root">
+        <h1>Maze Solver</h1>
+        <div id="instructions-div">
+        <h3>Instructions : </h3>
+            <p>
+
+            </p>
+        </div>
+    </div>
+    <div id="content-root">
+        <div id="image-inp-div"></div>
+            <input type="file" id="file-inp-elem" />
+        <div id="other-inp-div">
+            <div id="st-pt-div" class="pt-div">
+                <button id="st-pt-btn" class="pt-btn">Select Starting Point</button>
+                <p id="st-pt-info" class="pt-info">Selected Point : 
+                    <span id="st-pt-val" class="pt-val"></span>
+                </p>
+            </div>
+            <div id="end-pt-div" class="pt-div">
+                <button id="end-pt-btn" class="pt-btn">Select Ending Point</button>
+                <p id="end-pt-info" class="pt-info">Selected Point : 
+                    <span id="end-pt-val" class="pt-val"></span>
+                </p>
+            </div>
+            <div id="thresh-div" >
+                <label for="thresh-selector" >Change Threshold value.</label>
+                <input type="range" id="thresh-selector" name="thresh-selector"> 
+                <input type="number" id="thresh-value" />
+            </div>
+            
+            <div id="submit-div" >
+                <button id="solver-btn">Solve Maze</button>
+            </div>
+        </div>
+        <div id="canvas-div">
+            <canvas id="main-canvas">
+                Your browser does not supports canvas. Cant run this maze solver.
+            </canvas>
+        </div>
+    </div>
     A Maze solver with responsive web design.
 </body>
 </html>
