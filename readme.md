@@ -1,1 +1,1 @@
-Simple maze solver
+# maze solver
