@@ -12,15 +12,18 @@ function get_thresh(canvas_ctx, src_image_data, thresh){
             res.data[i] = 255;
             res.data[i+1] = 255;
             res.data[i+2] = 255;
+            
         }
         // else 0 by default
-        res.data[i+3] = 1; // alpha value
+        // res.data[i+3] = 1; // alpha value
+        res.data[i+3] = 255;
     }
     return res;
 }
 
 // read image data and thresh selector input and do the job
 function apply_thresh(){
+    //return;
     // return if not image not loaded yet
     if(image_data_saved === undefined){
         return;
@@ -29,7 +32,7 @@ function apply_thresh(){
     console.log("apply_thresh() called.")
     thresh = thresh_inp_num.value;
     new_image_data = get_thresh(main_canvas_ctx, image_data_saved, thresh);
-    main_canvas_ctx.putImageData(new_image_data);
+    main_canvas_ctx.putImageData(new_image_data, 0, 0);
 }
 
 function set_pixel_color(canvas_ctx, px, py, r, g, b){
