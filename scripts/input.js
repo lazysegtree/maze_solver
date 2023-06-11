@@ -6,8 +6,8 @@ function set_pt_select_listener(){
 
         main_canvas.addEventListener("click", function(event){
             const bounding = main_canvas.getBoundingClientRect();
-            const x = event.clientX - bounding.left;
-            const y = event.clientY - bounding.top;
+            const x = Math.floor( event.clientX - bounding.left);
+            const y = Math.floor( event.clientY - bounding.top);
             cur_pt_val_elem_x.innerHTML = x;
             cur_pt_val_elem_y.innerHTML = y;
             console.log("Click detected on x = ", x, ", y = ", y);

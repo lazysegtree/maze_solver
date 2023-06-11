@@ -127,7 +127,7 @@ function worker_main(){
             bfs.push([x,y]);
 
             if(cur_visit % 1000 == 0){
-                console.log(visit_r, visit_b, visit_g, b_diff);
+                //console.log(visit_r, visit_b, visit_g, b_diff);
             }
 
             set_pixel_color(x, y, visit_r, visit_g, visit_b - b_diff);
