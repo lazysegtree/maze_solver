@@ -3,23 +3,10 @@
 body{
     font-family: 'Ubuntu Mono';
     background-color: #eeeeee;
-    margin: 0 auto;
 }
 
 h1{
     font-family: 'Tilt Prism';
-}
-
-canvas{
-    border: 1px solid black;
-}
-
-.section-div{
-    background-color: #dddddd;
-    border-radius: 3px;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-    padding : 0.5rem;
 }
 
 #st-pt-div, #end-pt-div{
