@@ -52,13 +52,11 @@ function init_thresh_selector(){
     thresh_inp_num.value = DEF_THRESH, thresh_inp_range.value = DEF_THRESH;
 
     thresh_inp_num.addEventListener("input", function(event){
-        //thresh_inp_range.value = event.target.value; // maybe try this
         thresh_inp_range.value = thresh_inp_num.value;
         apply_thresh();
     });
     
     thresh_inp_range.addEventListener("input", function(event){
-        //thresh_inp_range.value = event.target.value; // maybe try this
         thresh_inp_num.value = thresh_inp_range.value;
         apply_thresh();
     });
@@ -79,7 +77,6 @@ function init_file_inp(){
         const reader = new FileReader();
         reader.addEventListener("load", function(event){
             console.log("Image Loaded src = ", event.target.result);
-            //img = document.getElementById("out-image");
             img = new Image();
             img.src = event.target.result;
             img.height = main_canvas.height;

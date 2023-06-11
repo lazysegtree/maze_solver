@@ -1,6 +1,4 @@
 
-
-
 // get a new thresholded according to image_data_saved image_data in place
 function get_thresh(canvas_ctx, src_image_data, thresh){
     res = canvas_ctx.createImageData(src_image_data); // copy only width and height

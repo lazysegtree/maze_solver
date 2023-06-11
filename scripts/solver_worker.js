@@ -4,22 +4,12 @@ function worker_main(){
     console.log("worker_main() run.");
     const parent = this;
 
+    // Functions 
     function assert(cond, msg = ""){
         if(!cond){
             throw new Error("Assertion Error." + msg);
         }
     }
-
-    function Color(r=0, g=0, b=0) {
-        // black by default
-        this.r = r, this.g = g, this.b = b, this.a = 255;
-        const parent = this;
-        this.is_equal = function(obj){
-            return  parent.r === obj.r && parent.g === obj.g &&
-                    parent.b === obj.b && parent.a === obj.a;
-        }
-    }
-
 
     function memset(arr, val){
         for(let i=0; i<arr.length; i++){
@@ -42,6 +32,20 @@ function worker_main(){
         return arr;
     }
 
+    function get_pixel_color(image_data, px, py){
+        p_idx = 4* (py*image_data.width + px);
+        const   r = image_data.data[p_idx], g = image_data.data[p_idx + 1], 
+                b = image_data.data[p_idx + 2];
+        //console.log("p_idx = ", p_idx, "r,b,g : ", r, " ", g, " ", b);
+        return new Color(r,g,b);
+    }
+
+    function set_pixel_color(px, py, r,g,b, sz=1){
+        parent.postMessage(["set_pixel_color", px, py, r,g,b, sz]);
+    }
+
+
+    // Constructor Functions : 
     function Queue(max_size, def_val = 0){
         let parent = this;
         this.max_size = max_size;
@@ -77,20 +81,17 @@ function worker_main(){
 
     }
 
-
-    function get_pixel_color(image_data, px, py){
-        p_idx = 4* (py*image_data.width + px);
-        const   r = image_data.data[p_idx], g = image_data.data[p_idx + 1], 
-                b = image_data.data[p_idx + 2];
-        //console.log("p_idx = ", p_idx, "r,b,g : ", r, " ", g, " ", b);
-        return new Color(r,g,b);
+    function Color(r=0, g=0, b=0) {
+        // black by default
+        this.r = r, this.g = g, this.b = b, this.a = 255;
+        const parent = this;
+        this.is_equal = function(obj){
+            return  parent.r === obj.r && parent.g === obj.g &&
+                    parent.b === obj.b && parent.a === obj.a;
+        }
     }
 
-    // working
-    function set_pixel_color(px, py, r,g,b, sz=1){
-        parent.postMessage(["set_pixel_color", px, py, r,g,b, sz]);
-    }
-
+    // Global variables
     const visit_r = 60, visit_g = 200, visit_b = 250;
     const path_color = new Color(200, 50, 50);
     
@@ -98,7 +99,7 @@ function worker_main(){
     onmessage = function (event)
     {
         const[ init_image_data, st_px, st_py, end_px, end_py] = event.data;
-        // canvas, st_px, st_py, end_px, end_py
+        
         console.log("Solver Called with st : ", st_px, " ", st_py, " end : ", end_px, " ", end_py );
         
         w = init_image_data.width;
@@ -107,10 +108,6 @@ function worker_main(){
         st_color = get_pixel_color(init_image_data, st_px, st_py);
         end_color = get_pixel_color(init_image_data, end_px, end_py);
 
-        // init bfs queue
-        // Size is enough ?
-        console.warn("BFS queue might not have sufficient size."); 
-        
         const bfs = new Queue(w*h, [-1,-1]);
         const level = init_2d_arr(w, h, -1);
         const diff = [ [1,0], [-1,0], [0,1], [0,-1] ];
@@ -118,6 +115,7 @@ function worker_main(){
         bound_check = function(x, y){
             return x>=0 && y>=0 && x<w && y<h;
         };
+
 
         const max_visit = w*h;
         let cur_visit = 0;
@@ -137,7 +135,6 @@ function worker_main(){
             // if we reach end, end here
             if(x === end_px && y === end_py){
                 console.log("Reached the end.");
-                bfs.clear();
             }
         }
 
@@ -150,7 +147,7 @@ function worker_main(){
         while(!bfs.is_empty() && level[end_px][end_py]==-1){
             n_iter++;
             //if(n_iter > iter_lim) break;
-            if(n_iter % 1000 === 0){
+            if(n_iter % 5000 === 0){
                 console.log("Doing " + n_iter + "th iteration.")
             }
             const [x,y] = bfs.pop();
