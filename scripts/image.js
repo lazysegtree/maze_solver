@@ -53,5 +53,9 @@ function set_pixel_color(canvas_ctx, px, py, color){
 
 
 function get_pixel_color(image_data, px, py){
-    p_idx = 
+    p_idx = 4* (py*image_data.width + px);
+    const   r = image_data.data[p_idx], g = image_data.data[p_idx + 1], 
+            b = image_data.data[p_idx + 2];
+    console.log("p_idx = ", p_idx, "r,b,g : ", r, " ", g, " ", b);
+    return Color(r,g,b);
 }
