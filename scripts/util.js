@@ -1,6 +1,6 @@
-function assert(cond){
+function assert(cond, msg = ""){
     if(!cond){
-        throw new Error("Assertion Error" + cond + " is false");
+        throw new Error("Assertion Error." + msg);
     }
 }
 

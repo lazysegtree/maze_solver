@@ -1,5 +1,5 @@
-CANVAS_WIDTH = 600
-CANVAS_HEIGHT = 400
+CANVAS_WIDTH = 200
+CANVAS_HEIGHT = 100
 DEF_THRESH = 150;
 
 // Global element variables that are used often
@@ -17,3 +17,4 @@ const thresh_inp_num = document.getElementById("thresh-value");
 
 
 const visit_color = new Color(50, 200, 50);
+const path_color = new Color(200, 50, 50);

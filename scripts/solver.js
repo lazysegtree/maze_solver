@@ -40,8 +40,16 @@ function solve(canvas, st_px, st_py, end_px, end_py){
 
     visit(st_px, st_py, -1);
 
+    let n_iter = 0;
+    //const iter_lim = 100;
+
     // do bfs
     while(!bfs.is_empty()){
+        n_iter++;
+        //if(n_iter > iter_lim) break;
+        if(n_iter % 1000 === 0){
+            console.log("Doing " + n_iter + "th iteration.")
+        }
         const [x,y] = bfs.pop();
         // color of x,y is guaranteed to be st_color
         for(let di=0; di<diff.length; di++){
@@ -58,5 +66,43 @@ function solve(canvas, st_px, st_py, end_px, end_py){
         }
     }
 
+    function color_around(x, y, color, sz = 1){
+        for(let px=x-sz; px<=x+sz; px++){
+            for(let py=y-sz; py<=y+sz; py++){
+                if( bound_check(px, py) && 
+                    st_color.is_equal(get_pixel_color(init_image_data, px, py)) 
+                )
+                {
+                    set_pixel_color(canvas_ctx, px, py, color);
+                }
+            }
+        }
+    }
+
     // trace the path
+    // from [end_px, end_py]
+    let curx = end_px, cury = end_py;
+
+    while(curx != st_px && cury != end_py){
+        // color current pixel
+        // maybe entire 3x3 pixel space arround it as well ?
+        color_around(curx, cury, path_color);
+
+        // look around and go with min level 
+        let nextx = -1, nexty = -1;
+        for(let i=0; i<diff.length; i++){
+            const   newx = curx + diff[i][0], 
+                    newy = cury + diff[i][1];
+            if( bound_check(newx, newy) && 
+                st_color.is_equal(get_pixel_color(init_image_data, newx, newy)) && 
+                level[newx][newy] == level[curx][cury] - 1 
+            ){
+                curx = newx;
+                cury = newy;
+                break;
+            }
+        }
+
+    }
+
 }
