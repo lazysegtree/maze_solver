@@ -73,6 +73,7 @@ function init_file_inp(){
             (file.type && !file.type.startsWith('image/'))
         ){
             alert("Please provide an image file.");
+            return;
         }
         const reader = new FileReader();
         reader.addEventListener("load", function(event){
@@ -86,7 +87,6 @@ function init_file_inp(){
                 main_canvas_ctx.drawImage(img, 0, 0, img.width, img.height);
                 
                 // also create backup of imagedata
-                setTimeout(undefined, 1000);
                 console.log("Saving Image Data");
                 image_data_saved = main_canvas_ctx.getImageData(0, 0, main_canvas.width, main_canvas.height);
                 // apply thresholding

@@ -3,22 +3,22 @@
 ## Current Todo With priority
 
 ### Implementation : Major
-- [x] (1)Animation of BFS filling
-- [x] (2)BFS filling in varying color
-- [ ] Styling
-- [ ] Responsive Styling
-- [ ] Visible Marking of start and end point
-- [x] Reset Button
+- [x] (A1) Animation of BFS filling
+- [x] (A2) BFS filling in varying color
+- [ ] (B1) Styling
+- [ ] (B2) Responsive Styling
+- [ ] (A6) Visible Marking of start and end point
+- [x] (A7) Reset Button
 
 ### Implementation : Minor
 
-- [ ] (3) Message if cant find solution of maze
-- [ ] (4) Message if solving started on click of solve
-- [ ] (5) Check if image is loaded on solve button.
-
-
+- [x] (A3) Message if cant find solution of maze
+- [x] (A4) Message if solving started on click of solve
+- [ ] (A5) Check if image is loaded on solve button.
+- [ ] (C1) Limit the allowed image extensions
+ 
 ### Other
 
-- [ ] Code cleanup
-- [ ] Proper documentation here
-- [ ] Demo video and code walkthrough video.
+- [ ] (D1) Code cleanup
+- [ ] (D2) Proper documentation here
+- [ ] (D3) Demo video and code walkthrough video.

@@ -71,3 +71,7 @@ function Queue(max_size, def_val = 0){
     }
 
 }
+
+function set_info(info){
+    info_elem.innerHTML = info;
+}

@@ -166,6 +166,15 @@ function worker_main(){
             }
         }
 
+        // did we solve the maze
+        if(level[end_px][end_py] === -1){
+            parent.postMessage(["result", "Could not find a path from start to end."]);
+            return;
+        }
+        else{
+            parent.postMessage(["result", "Maze solved. Now tracing a path from start to end."]);
+        }
+
         // trace the path
         // from [end_px, end_py]
         let curx = end_px, cury = end_py;
@@ -192,8 +201,10 @@ function worker_main(){
             }
 
         }
+        
+        parent.postMessage(["result", "Maze solved. Traced a path from start to end."]);
 
-}   
+    }   
 
 }
 

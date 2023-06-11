@@ -15,6 +15,8 @@ const   st_pt_val_elem_x = document.getElementById("st-pt-val-x"),
 const thresh_inp_range = document.getElementById("thresh-selector");
 const thresh_inp_num = document.getElementById("thresh-value");
 
+const info_elem = document.getElementById("info-content");
+
 
 const visit_color = new Color(50, 200, 50);
 const path_color = new Color(200, 50, 50);
