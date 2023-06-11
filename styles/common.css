@@ -1,12 +1,30 @@
+
+
 body{
     font-family: 'Ubuntu Mono';
+    background-color: #eeeeee;
+    width : 70%;
+    margin: 0 auto;
 }
 
 h1{
     font-family: 'Tilt Prism';
     font-size: 5rem;
+    text-align: center;
 }
 
 canvas{
     border: 1px solid black;
+}
+
+.section-div{
+    background-color: #dddddd;
+    border-radius: 3px;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding : 0.5rem;
+}
+
+#st-pt-div, #end-pt-div{
+    display: inline-block;
 }

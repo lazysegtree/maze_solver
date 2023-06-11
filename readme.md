@@ -16,6 +16,7 @@
 - [x] (A3) Message if cant find solution of maze
 - [x] (A4) Message if solving started on click of solve
 - [x] (A5) Check if image is loaded on solve button.
+- [ ] (A8) Add instructions
 - [ ] (C1) Limit the allowed image extensions
  
 ### Other
