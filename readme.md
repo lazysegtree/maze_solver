@@ -8,7 +8,7 @@
 - [x] (A2) BFS filling in varying color
 - [ ] (B1) Styling
 - [ ] (B2) Responsive Styling
-- [ ] (A6) Visible Marking of start and end point
+- [x] (A6) Visible Marking of start and end point
 - [x] (A7) Reset Button
 
 ### Implementation : Minor
