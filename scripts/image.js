@@ -38,10 +38,10 @@ function apply_thresh(){
 }
 
 // working
-function set_pixel_color(canvas_ctx, px, py, color){
-    console.log(" px ", px, " py ", py, " color : ", color);
+function set_pixel_color(canvas_ctx, px, py, color, sz=1){
+    //console.log(" px ", px, " py ", py, " color : ", color);
     canvas_ctx.fillStyle = `rgb(${color.r}, ${color.g}, ${color.b},  255)`;
-    canvas_ctx.fillRect(px, py, 1, 1);
+    canvas_ctx.fillRect(px, py, sz, sz);
 }
 
 
@@ -50,6 +50,6 @@ function get_pixel_color(image_data, px, py){
     p_idx = 4* (py*image_data.width + px);
     const   r = image_data.data[p_idx], g = image_data.data[p_idx + 1], 
             b = image_data.data[p_idx + 2];
-    console.log("p_idx = ", p_idx, "r,b,g : ", r, " ", g, " ", b);
+    //console.log("p_idx = ", p_idx, "r,b,g : ", r, " ", g, " ", b);
     return new Color(r,g,b);
 }

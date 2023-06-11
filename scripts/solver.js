@@ -24,7 +24,6 @@ function solve(canvas, st_px, st_py, end_px, end_py){
     console.warn("BFS queue might not have sufficient size."); 
     const bfs = new Queue(w*h, [-1,-1]);
     const level = init_2d_arr(w, h, -1);
-
     const diff = [ [1,0], [-1,0], [0,1], [0,-1] ];
 
     bound_check = function(x, y){
@@ -32,10 +31,16 @@ function solve(canvas, st_px, st_py, end_px, end_py){
     };
 
     visit = function(x, y, par_level){
-        console.log("visiting (", x, ", ", y, ") now.");
+        //console.log("visiting (", x, ", ", y, ") now.");
         level[x][y] = par_level+1;
         bfs.push([x,y]);
         set_pixel_color(canvas_ctx, x, y, visit_color);
+
+        // if we reach end, end here
+        if(x === end_px && y === end_py){
+            console.log("Reached the end.");
+            bfs.clear();
+        }
     }
 
     visit(st_px, st_py, -1);
@@ -44,7 +49,7 @@ function solve(canvas, st_px, st_py, end_px, end_py){
     //const iter_lim = 100;
 
     // do bfs
-    while(!bfs.is_empty()){
+    while(!bfs.is_empty() && level[end_px][end_py]==-1){
         n_iter++;
         //if(n_iter > iter_lim) break;
         if(n_iter % 1000 === 0){
@@ -66,27 +71,15 @@ function solve(canvas, st_px, st_py, end_px, end_py){
         }
     }
 
-    function color_around(x, y, color, sz = 1){
-        for(let px=x-sz; px<=x+sz; px++){
-            for(let py=y-sz; py<=y+sz; py++){
-                if( bound_check(px, py) && 
-                    st_color.is_equal(get_pixel_color(init_image_data, px, py)) 
-                )
-                {
-                    set_pixel_color(canvas_ctx, px, py, color);
-                }
-            }
-        }
-    }
-
     // trace the path
     // from [end_px, end_py]
     let curx = end_px, cury = end_py;
 
-    while(curx != st_px && cury != end_py){
+    while(curx != st_px || cury != st_py){
         // color current pixel
         // maybe entire 3x3 pixel space arround it as well ?
-        color_around(curx, cury, path_color);
+        console.log("Tracing : curx, cury : ", curx, " ", cury);
+        set_pixel_color(canvas_ctx, curx, cury, path_color, 3);
 
         // look around and go with min level 
         let nextx = -1, nexty = -1;

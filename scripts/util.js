@@ -65,4 +65,9 @@ function Queue(max_size, def_val = 0){
         return ret;
     }
 
+    this.clear = function(){
+        parent.rear = -1;
+        parent.front = 0;
+    }
+
 }
