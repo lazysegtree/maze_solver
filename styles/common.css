@@ -3,14 +3,11 @@
 body{
     font-family: 'Ubuntu Mono';
     background-color: #eeeeee;
-    width : 70%;
     margin: 0 auto;
 }
 
 h1{
     font-family: 'Tilt Prism';
-    font-size: 5vw;
-    text-align: center;
 }
 
 canvas{
