@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Maze Solver</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&family=Tilt+Prism" rel="stylesheet">
     
     <link rel="stylesheet" type="text/css" href="./styles/canvas_overlay.css" />
@@ -21,8 +21,19 @@
 
             </p>
         </div>
-        <div id="image-inp-div" class="section-div"></div>
+        <div id="image-inp-div" class="section-div">
             <input type="file" id="file-inp-elem" />
+        </div>
+        <div id="canvas-div"  class="section-div">
+            <canvas id="overlay-canvas">
+                Your browser does not supports canvas. Cant run this maze solver.
+            </canvas>
+            <canvas id="main-canvas">
+                Your browser does not supports canvas. Cant run this maze solver.
+            </canvas>
+        </div>
+        
+            
         <div id="other-inp-div" class="section-div">
             <div id="st-pt-div" class="pt-div">
                 <button id="st-pt-btn" class="pt-btn">Select Starting Point</button>
@@ -53,14 +64,7 @@
                 <span id="info-content"></span>
             </div>
         </div>
-        <div id="canvas-div"  class="section-div">
-            <canvas id="overlay-canvas">
-                Your browser does not supports canvas. Cant run this maze solver.
-            </canvas>
-            <canvas id="main-canvas">
-                Your browser does not supports canvas. Cant run this maze solver.
-            </canvas>
-        </div>
+        
     </div>
 
     <footer  class="section-div">
