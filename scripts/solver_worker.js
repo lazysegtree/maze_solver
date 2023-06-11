@@ -87,20 +87,17 @@ function worker_main(){
     }
 
     // working
-    function set_pixel_color(px, py, color, sz=1){
-        parent.postMessage(["set_pixel_color", px, py, color.r, color.g, color.b, sz]);
+    function set_pixel_color(px, py, r,g,b, sz=1){
+        parent.postMessage(["set_pixel_color", px, py, r,g,b, sz]);
     }
 
-    const visit_color = new Color(50, 200, 50);
+    const visit_r = 60, visit_g = 200, visit_b = 250;
     const path_color = new Color(200, 50, 50);
     
     
     onmessage = function (event)
     {
-        console.log("Before import script");
-        //importScripts("util.js", "config.js", "image.js");
         const[ init_image_data, st_px, st_py, end_px, end_py] = event.data;
-        console.log("visit_color : ", visit_color);
         // canvas, st_px, st_py, end_px, end_py
         console.log("Solver Called with st : ", st_px, " ", st_py, " end : ", end_px, " ", end_py );
         
@@ -122,11 +119,20 @@ function worker_main(){
             return x>=0 && y>=0 && x<w && y<h;
         };
 
+        const max_visit = w*h;
+        let cur_visit = 0;
         visit = function(x, y, par_level){
+            cur_visit ++;
+            const b_diff = Math.floor( visit_b * (cur_visit / max_visit) );
             //console.log("visiting (", x, ", ", y, ") now.");
             level[x][y] = par_level+1;
             bfs.push([x,y]);
-            set_pixel_color(x, y, visit_color);
+
+            if(cur_visit % 1000 == 0){
+                console.log(visit_r, visit_b, visit_g, b_diff);
+            }
+
+            set_pixel_color(x, y, visit_r, visit_g, visit_b - b_diff);
 
             // if we reach end, end here
             if(x === end_px && y === end_py){
@@ -170,8 +176,8 @@ function worker_main(){
         while(curx != st_px || cury != st_py){
             // color current pixel
             // maybe entire 3x3 pixel space arround it as well ?
-            console.log("Tracing : curx, cury : ", curx, " ", cury);
-            set_pixel_color(curx, cury, path_color, 3);
+            //console.log("Tracing : curx, cury : ", curx, " ", cury);
+            set_pixel_color(curx, cury, path_color.r, path_color.g, path_color.b, 2);
 
             // look around and go with min level 
             let nextx = -1, nexty = -1;
