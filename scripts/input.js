@@ -41,12 +41,14 @@ function init_btn(){
     
     // Start and end buttons
     document.getElementById("st-pt-btn").onclick = function (){
+        set_info("Select starting point now.");
         set_pt_select_listener();
         cur_pt_val_elem_x = st_pt_val_elem_x;
         cur_pt_val_elem_y = st_pt_val_elem_y;
     };
     
     document.getElementById("end-pt-btn").onclick = function (){
+        set_info("Select ending point now.");
         set_pt_select_listener();
         cur_pt_val_elem_x = end_pt_val_elem_x;
         cur_pt_val_elem_y = end_pt_val_elem_y;
