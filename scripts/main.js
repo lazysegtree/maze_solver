@@ -14,6 +14,12 @@ function init(){
 }
 
 function handle_solve(){
+
+    if(image_data_saved === undefined){
+        set_info("Please provide and image first.");
+        return;
+    }
+
     const   st_px = st_pt_val_elem_x.innerHTML, st_py = st_pt_val_elem_y.innerHTML;
             end_px = end_pt_val_elem_x.innerHTML, end_py = end_pt_val_elem_y.innerHTML;
     
