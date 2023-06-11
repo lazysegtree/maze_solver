@@ -1,4 +1,26 @@
 
+#canvas-div{
+    position: relative;
+    width: 600px;
+    height: 400px;
+}
+
+#main-canvas, #overlay-canvas{
+    position: absolute;
+    left:0;
+    top:0;
+}
+
+#main-canvas{
+    z-index: 1;
+}
+
+#overlay-canvas{
+    z-index: 2;
+}
+
+footer{
+}
 
 canvas{
     border: 1px solid black;

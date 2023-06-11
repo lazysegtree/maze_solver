@@ -3,8 +3,10 @@
 
 function init(){
     // Initialize Canvas
-    main_canvas.width = CANVAS_WIDTH
-    main_canvas.height = CANVAS_HEIGHT
+    main_canvas.width = CANVAS_WIDTH; 
+    overlay_canvas.width = CANVAS_WIDTH
+    main_canvas.height = CANVAS_HEIGHT; 
+    overlay_canvas.height = CANVAS_HEIGHT;
 
     // initialize input elements
     init_btn();

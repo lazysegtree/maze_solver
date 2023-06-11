@@ -1,16 +1,36 @@
+function draw_st_end_points(){
+    
+    overlay_canvas_ctx.clearRect(0, 0, overlay_canvas.width, overlay_canvas.height);
+
+    const   st_px = st_pt_val_elem_x.innerHTML, st_py = st_pt_val_elem_y.innerHTML;
+            end_px = end_pt_val_elem_x.innerHTML, end_py = end_pt_val_elem_y.innerHTML;
+    
+    if(st_px != "" && st_py != ""){
+        set_pixel_color(overlay_canvas_ctx, st_px, st_py, st_pt_color, 5);
+    }
+    
+    if(end_px != "" && end_py != ""){
+        set_pixel_color(overlay_canvas_ctx, end_px, end_py, end_pt_color, 5);
+    }
+}
+
 function set_pt_select_listener(){
     if (typeof this.listener_set === "undefined"){
         this.listener_set = true;
         // set listener
         console.log("Setting listener for point select");
 
-        main_canvas.addEventListener("click", function(event){
-            const bounding = main_canvas.getBoundingClientRect();
+        overlay_canvas.addEventListener("click", function(event){
+            const bounding = overlay_canvas.getBoundingClientRect();
             const x = Math.floor( event.clientX - bounding.left);
             const y = Math.floor( event.clientY - bounding.top);
+            console.log("Click detected on x = ", x, ", y = ", y);
+
             cur_pt_val_elem_x.innerHTML = x;
             cur_pt_val_elem_y.innerHTML = y;
-            console.log("Click detected on x = ", x, ", y = ", y);
+
+            // Draw both 
+            draw_st_end_points();
         });
 
     }
