@@ -36,6 +36,9 @@ function init_btn(){
     document.getElementById("reset-btn").onclick = function (){
         // change the thresh slider to default value
         // maybe set choosen point A and choosent point B none
+        
+        thresh_inp_range.value = DEF_THRESH;
+        thresh_inp_range.dispatchEvent(new Event('input', {}));
     };
 
     document.getElementById("solve-btn").onclick = handle_solve;
