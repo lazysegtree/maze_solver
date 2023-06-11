@@ -1,4 +1,9 @@
 
+function Color(r=0, b=0, g=0) {
+    // black by default
+    this.r = r, this.g = g, this.b = b, this.a = 255;
+}
+
 // get a new thresholded according to image_data_saved image_data in place
 function get_thresh(canvas_ctx, src_image_data, thresh){
     res = canvas_ctx.createImageData(src_image_data); // copy only width and height
@@ -35,10 +40,18 @@ function apply_thresh(){
     main_canvas_ctx.putImageData(new_image_data, 0, 0);
 }
 
+// working
 function set_pixel_color(canvas_ctx, px, py, r, g, b){
-
+    canvas_ctx.fillStyle = `rgb(${r}, ${g}, ${b},  255)`;
+    canvas_ctx.fillRect(px, py, px, py);
 }
 
+function set_pixel_color(canvas_ctx, px, py, color){
+    set_pixel_color(canvas_ctx, px, py, color.r, color.g, color.b);
+}
+
+
+
 function get_pixel_color(image_data, px, py){
-    
+    p_idx = 
 }
