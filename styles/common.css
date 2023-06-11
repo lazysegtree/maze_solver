@@ -1,0 +1,12 @@
+body{
+    font-family: 'Ubuntu Mono';
+}
+
+h1{
+    font-family: 'Tilt Prism';
+    font-size: 5rem;
+}
+
+canvas{
+    border: 1px solid black;
+}
