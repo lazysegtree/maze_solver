@@ -8,7 +8,8 @@ function set_pt_select_listener(){
             const bounding = main_canvas.getBoundingClientRect();
             const x = event.clientX - bounding.left;
             const y = event.clientY - bounding.top;
-            cur_pt_val_elem.innerHTML = "location : (x = " + x + ", y=" + y + ")";
+            cur_pt_val_elem_x.innerHTML = x;
+            cur_pt_val_elem_y.innerHTML = y;
             console.log("Click detected on x = ", x, ", y = ", y);
         });
 
@@ -21,12 +22,14 @@ function init_btn(){
     // Start and end buttons
     document.getElementById("st-pt-btn").onclick = function (){
         set_pt_select_listener();
-        cur_pt_val_elem = document.getElementById("st-pt-val");
+        cur_pt_val_elem_x = st_pt_val_elem_x;
+        cur_pt_val_elem_y = st_pt_val_elem_y;
     };
     
     document.getElementById("end-pt-btn").onclick = function (){
         set_pt_select_listener();
-        cur_pt_val_elem = document.getElementById("end-pt-val");
+        cur_pt_val_elem_x = end_pt_val_elem_x;
+        cur_pt_val_elem_y = end_pt_val_elem_y;
     };
 
     // Solve and reset button
@@ -34,6 +37,8 @@ function init_btn(){
         // change the thresh slider to default value
         // maybe set choosen point A and choosent point B none
     };
+
+    document.getElementById("solve-btn").onclick = handle_solve;
 
 }
 

@@ -22,13 +22,15 @@
             <div id="st-pt-div" class="pt-div">
                 <button id="st-pt-btn" class="pt-btn">Select Starting Point</button>
                 <p id="st-pt-info" class="pt-info">Selected Point : 
-                    <span id="st-pt-val" class="pt-val"></span>
+                    <span id="st-pt-val-x" class="pt-val"></span>,
+                    <span id="st-pt-val-y" class="pt-val"></span>
                 </p>
             </div>
             <div id="end-pt-div" class="pt-div">
                 <button id="end-pt-btn" class="pt-btn">Select Ending Point</button>
                 <p id="end-pt-info" class="pt-info">Selected Point : 
-                    <span id="end-pt-val" class="pt-val"></span>
+                    <span id="end-pt-val-x" class="pt-val"></span>,
+                    <span id="end-pt-val-y" class="pt-val"></span>
                 </p>
             </div>
             <div id="thresh-div" >
@@ -38,7 +40,7 @@
             </div>
             
             <div id="submit-div" >
-                <button id="solver-btn">Solve Maze</button>
+                <button id="solve-btn">Solve Maze</button>
                 <button id="reset-btn">Reset</button>
             </div>
         </div>
@@ -49,8 +51,9 @@
         </div>
     </div>
     A Maze solver with responsive web design.
-    <script src="./scripts/config.js"></script>
+    
     <script src="./scripts/util.js"></script>
+    <script src="./scripts/config.js"></script>
     <script src="./scripts/input.js"></script>
     <script src="./scripts/image.js"></script>
     <script src="./scripts/solver.js"></script>
