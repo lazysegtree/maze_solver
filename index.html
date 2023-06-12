@@ -28,7 +28,8 @@
         <div id="image-inp-div" class="section-div">
             <input type="file" id="file-inp-elem" />
         </div>
-        <div id="canvas-div"  class="section-div">
+        <div class="row">
+        <div id="canvas-div"  class="section-div col-1 center-block">
             <canvas id="overlay-canvas">
                 Your browser does not supports canvas. Cant run this maze solver.
             </canvas>
@@ -36,39 +37,41 @@
                 Your browser does not supports canvas. Cant run this maze solver.
             </canvas>
         </div>
+        </div>
         
+        <div id="info" class="d-flex justify-content-center">
+            Info : <span id="info-content"></span>
+        </div>
             
         <div id="other-inp-div" class="section-div container mt-5">
             <div id="pt-div" class="row text-center">
-                <div id="st-pt-div" class="pt-div col-sm-4">
-                    <button id="st-pt-btn" class="pt-btn">Select Starting Point</button>
+                <div id="st-pt-div" class="pt-div col-sm-6">
+                    <button id="st-pt-btn" class="pt-btn btn btn-outline-secondary">Select Starting Point</button>
                     <p id="st-pt-info" class="pt-info">Selected Point : 
                         <span id="st-pt-val-x" class="pt-val"></span>,
                         <span id="st-pt-val-y" class="pt-val"></span>
                     </p>
                 </div>
-                <div id="end-pt-div" class="pt-div col-sm-4">
-                    <button id="end-pt-btn" class="pt-btn">Select Ending Point</button>
+                <div id="end-pt-div" class="pt-div col-sm-6">
+                    <button id="end-pt-btn" class="pt-btn btn btn-outline-secondary">Select Ending Point</button>
                     <p id="end-pt-info" class="pt-info">Selected Point : 
                         <span id="end-pt-val-x" class="pt-val"></span>,
                         <span id="end-pt-val-y" class="pt-val"></span>
                     </p>
                 </div>
             </div>
-            <div id="thresh-div" >
+            <div id="thresh-div" class="d-flex justify-content-center" >
                 <label for="thresh-selector" >Change Threshold value.</label>
                 <input type="range" id="thresh-selector" name="thresh-selector"> 
                 <input type="number" id="thresh-value" />
             </div>
             
-            <div id="submit-div" >
-                <button id="solve-btn">Solve Maze</button>
-                <button id="reset-btn">Reset</button>
+            <div id="submit-div"  class="p-2 btn-group d-flex justify-content-center">
+                <button id="solve-btn" class="btn btn-outline-success">Solve Maze</button>
+                <button id="reset-btn" class="btn btn-outline-danger">Reset</button>
                 
             </div>
-            <div id="info">
-                <span id="info-content"></span>
-            </div>
+            
         </div>
         
     </div>

@@ -10,6 +10,8 @@
 - [ ] (B2) Responsive Styling
 - [x] (A6) Visible Marking of start and end point
 - [x] (A7) Reset Button
+- [ ] (A9) Red path does not overlaps the black pixels
+- [ ] (A10) Avoid choosing pixels adjacent to black pixels for path
 
 ### Implementation : Minor
 

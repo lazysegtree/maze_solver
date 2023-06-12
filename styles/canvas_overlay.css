@@ -1,8 +1,9 @@
 
 #canvas-div{
     position: relative;
-    width: 98%;
     height: 400px;
+    margin-left: 10vw;
+    margin-right: 10vw;
 }
 
 #main-canvas, #overlay-canvas{

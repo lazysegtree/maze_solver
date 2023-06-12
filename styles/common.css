@@ -12,3 +12,8 @@ h1{
 #st-pt-div, #end-pt-div{
     display: inline-block;
 }
+
+canvas{
+    border : 1px solid black;
+}
+
