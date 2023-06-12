@@ -19,17 +19,12 @@
     
     <div id="content-root" class="section-div container mt-1">
         
-        <div id="instructions-div" class="section-div">
-            <h3>Instructions : </h3>
-            <p>
-
-            </p>
-        </div>
+        
         <div id="image-inp-div" class="section-div">
             <input type="file" id="file-inp-elem" />
         </div>
-        <div class="row">
-        <div id="canvas-div"  class="section-div col-1 center-block">
+        <div class="row mx-auto">
+        <div id="canvas-div"  class="section-div">
             <canvas id="overlay-canvas">
                 Your browser does not supports canvas. Cant run this maze solver.
             </canvas>
@@ -39,8 +34,8 @@
         </div>
         </div>
         
-        <div id="info">
-            Info : <span id="info-content"></span>
+        <div id="info" class=" rounded-1 mt-2 p-1 border border-2 border-sucess border-start">
+            Info : <span id="info-content" class =""></span>
         </div>
             
         <div id="other-inp-div" class="section-div mt-2">
@@ -72,6 +67,17 @@
                 
             </div>
             
+        </div>
+
+        <div id="instructions-div" class="section-div">
+            <h3>Instructions : </h3>
+            <p>
+                1. Select you image of maze from the device.
+                <br/>2. Put the slider threshold to appropriate postion such that the image is clear.
+                <br/>3. Click on 'Select Start Postion' button and select the start position on the maze.
+                <br/>4. Similiarly select End position.
+                <br/>5. Now click on 'Solve Maze', and the solver will begin.
+            </p>
         </div>
         
     </div>
