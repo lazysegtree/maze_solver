@@ -1,5 +1,5 @@
-CANVAS_WIDTH = 400
-CANVAS_HEIGHT = 300
+CANVAS_WIDTH = 300
+CANVAS_HEIGHT = 250
 DEF_THRESH = 150;
 
 // Global element variables that are used often
