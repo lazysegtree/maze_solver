@@ -17,7 +17,7 @@
         <h1 class="fs-1">Maze Solver</h1>
     </div>
     
-    <div id="content-root" class="container-lg">
+    <div id="content-root" class="section-div container mt-1">
         
         <div id="instructions-div" class="section-div">
             <h3>Instructions : </h3>
@@ -39,20 +39,20 @@
         </div>
         </div>
         
-        <div id="info" class="d-flex justify-content-center">
+        <div id="info">
             Info : <span id="info-content"></span>
         </div>
             
-        <div id="other-inp-div" class="section-div container mt-5">
-            <div id="pt-div" class="row text-center">
-                <div id="st-pt-div" class="pt-div col-sm-6">
+        <div id="other-inp-div" class="section-div mt-2">
+            <div id="pt-div" class="">
+                <div id="st-pt-div" class="pt-div col-sm-4">
                     <button id="st-pt-btn" class="pt-btn btn btn-outline-secondary">Select Starting Point</button>
                     <p id="st-pt-info" class="pt-info">Selected Point : 
                         <span id="st-pt-val-x" class="pt-val"></span>,
                         <span id="st-pt-val-y" class="pt-val"></span>
                     </p>
                 </div>
-                <div id="end-pt-div" class="pt-div col-sm-6">
+                <div id="end-pt-div" class="pt-div col-sm-4">
                     <button id="end-pt-btn" class="pt-btn btn btn-outline-secondary">Select Ending Point</button>
                     <p id="end-pt-info" class="pt-info">Selected Point : 
                         <span id="end-pt-val-x" class="pt-val"></span>,
@@ -60,13 +60,13 @@
                     </p>
                 </div>
             </div>
-            <div id="thresh-div" class="d-flex justify-content-center" >
+            <div id="thresh-div" >
                 <label for="thresh-selector" >Change Threshold value.</label>
                 <input type="range" id="thresh-selector" name="thresh-selector"> 
                 <input type="number" id="thresh-value" />
             </div>
             
-            <div id="submit-div"  class="p-2 btn-group d-flex justify-content-center">
+            <div id="submit-div"  class="btn-group d-flex justify-content-center mt-2 mb-2">
                 <button id="solve-btn" class="btn btn-outline-success">Solve Maze</button>
                 <button id="reset-btn" class="btn btn-outline-danger">Reset</button>
                 
