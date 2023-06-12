@@ -12,6 +12,8 @@
 - [x] (A7) Reset Button
 - [ ] (A9) Red path does not overlaps the black pixels
 - [ ] (A10) Avoid choosing pixels adjacent to black pixels for path
+- [ ] (A11) Set demo mazes 
+
 
 ### Implementation : Minor
 
