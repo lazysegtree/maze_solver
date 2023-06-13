@@ -110,6 +110,7 @@ function worker_main(){
 
         const bfs = new Queue(w*h, [-1,-1]);
         const level = init_2d_arr(w, h, -1);
+        const adj_black = init_2d_arr(w, h, false);
         const diff = [ [1,0], [-1,0], [0,1], [0,-1] ];
 
         bound_check = function(x, y){
@@ -144,6 +145,7 @@ function worker_main(){
         //const iter_lim = 100;
 
         // do bfs
+        let cur_adj_black = false;
         while(!bfs.is_empty() && level[end_px][end_py]==-1){
             n_iter++;
             //if(n_iter > iter_lim) break;
@@ -152,6 +154,8 @@ function worker_main(){
             }
             const [x,y] = bfs.pop();
             // color of x,y is guaranteed to be st_color
+            cur_adj_black = false;
+
             for(let di=0; di<diff.length; di++){
                 const   curx = x + diff[di][0],
                         cury = y + diff[di][1];
@@ -162,8 +166,13 @@ function worker_main(){
                     if(st_color.is_equal(cur_color)){
                         visit(curx, cury, level[x][y]);
                     }
+                    else{
+                        cur_adj_black = true;
+                    }
                 }      
             }
+
+            adj_black[x][y] = cur_adj_black;
         }
 
         // did we solve the maze
