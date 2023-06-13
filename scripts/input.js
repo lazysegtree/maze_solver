@@ -6,11 +6,11 @@ function draw_st_end_points(){
             end_px = end_pt_val_elem_x.innerHTML, end_py = end_pt_val_elem_y.innerHTML;
     
     if(st_px != "" && st_py != ""){
-        set_pixel_color(overlay_canvas_ctx, st_px, st_py, st_pt_color, 5);
+        set_pixel_color(overlay_canvas_ctx, st_px+2, st_py+2, st_pt_color, 5);
     }
     
     if(end_px != "" && end_py != ""){
-        set_pixel_color(overlay_canvas_ctx, end_px, end_py, end_pt_color, 5);
+        set_pixel_color(overlay_canvas_ctx, end_px+2, end_py+2, end_pt_color, 5);
     }
 }
 

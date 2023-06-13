@@ -31,6 +31,8 @@ function handle_solve(){
         return;
     }
 
+    apply_thresh();
+
     init_image_data = main_canvas_ctx.getImageData(0, 0, main_canvas.width, main_canvas.height);
 
     st_color = get_pixel_color(init_image_data, st_px, st_py);
