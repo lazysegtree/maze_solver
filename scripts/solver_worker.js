@@ -110,7 +110,6 @@ function worker_main(){
 
         const bfs = new Queue(w*h, [-1,-1]);
         const level = init_2d_arr(w, h, -1);
-        const adj_black = init_2d_arr(w, h, false);
         const diff = [ [1,0], [-1,0], [0,1], [0,-1] ];
 
         bound_check = function(x, y){
@@ -145,7 +144,6 @@ function worker_main(){
         //const iter_lim = 100;
 
         // do bfs
-        let cur_adj_black = false;
         while(!bfs.is_empty() && level[end_px][end_py]==-1){
             n_iter++;
             //if(n_iter > iter_lim) break;
@@ -154,7 +152,6 @@ function worker_main(){
             }
             const [x,y] = bfs.pop();
             // color of x,y is guaranteed to be st_color
-            cur_adj_black = false;
 
             for(let di=0; di<diff.length; di++){
                 const   curx = x + diff[di][0],
@@ -166,13 +163,9 @@ function worker_main(){
                     if(st_color.is_equal(cur_color)){
                         visit(curx, cury, level[x][y]);
                     }
-                    else{
-                        cur_adj_black = true;
-                    }
                 }      
             }
 
-            adj_black[x][y] = cur_adj_black;
         }
 
         // did we solve the maze
@@ -183,6 +176,45 @@ function worker_main(){
         else{
             parent.postMessage(["result", "Maze solved. Now tracing a path from start to end."]);
         }
+
+
+        
+        const black_dist = init_2d_arr(w, h, -1);
+        bfs.clear();
+
+        const visit_black = function(x, y, par_dist){
+            black_dist[x][y] = par_dist + 1;
+            bfs.push([x,y]);
+        };
+
+        // black bfs
+        
+        for(let x=0; x<w; x++){
+            for(let y=0; y<h; y++){
+                if(! st_color.is_equal(get_pixel_color(init_image_data, x, y))){
+                    visit_black(x, y, -1);
+                }
+            }
+        }
+
+
+        while(!bfs.is_empty()){
+            const [x, y] = bfs.pop();
+            for(let i=0; i<diff.length; i++){
+                const curx = x + diff[i][0];
+                const cury = y + diff[i][1];
+                if(bound_check(curx, cury) && black_dist[curx][cury] === -1){
+                    // color should be st_color
+                    assert(st_color.is_equal(get_pixel_color(init_image_data, curx, cury)));
+
+                    visit_black(curx, cury, black_dist[x][y]);
+                }
+            }
+        }
+
+        
+        //console.log("black_dist : ", black_dist);
+
 
         // trace the path
         // from [end_px, end_py]
@@ -196,25 +228,26 @@ function worker_main(){
 
             // look around and go with min level 
             let nextx = -1, nexty = -1;
+            let mx_black_dist = 0;
             for(let i=0; i<diff.length; i++){
                 const   newx = curx + diff[i][0], 
                         newy = cury + diff[i][1];
                 if( bound_check(newx, newy) && 
                     st_color.is_equal(get_pixel_color(init_image_data, newx, newy)) && 
-                    level[newx][newy] == level[curx][cury] - 1 
+                    (level[newx][newy] == level[curx][cury] - 1) &&
+                    black_dist[newx][newy] > mx_black_dist
                 ){
-                    if(nextx === -1 ){
-                        nextx = newx;
-                        nexty = newy;
-                    }
-                    else if(!adj_black[newx][newy]){
-                        nextx = newx;
-                        nexty = newy;
-                    }
+                    nextx = newx;
+                    nexty = newy;
+                    mx_black_dist = black_dist[newx][newy];
                 }
             }
             curx = nextx;
             cury = nexty;
+
+            assert(curx != -1 && cury != -1);
+
+            //console.log(curx, " ", cury, " ", nextx, " ", nexty);
 
         }
         
