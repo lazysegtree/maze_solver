@@ -41,7 +41,8 @@ First to finish the todo.
 - [x] (A10) Avoid choosing pixels adjacent to black pixels for path
 - [ ] (D11) Set demo mazes 3
 - [ ] (A11) Add transparency in final path color
-
+- [ ] (E1) Add dijskta based solver to make path go more in between.
+ 
 
 ### Implementation : Minor
 

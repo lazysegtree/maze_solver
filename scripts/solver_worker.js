@@ -91,21 +91,67 @@ function worker_main(){
         }
     }
 
+    
+    const diff = [ [1,0], [-1,0], [0,1], [0,-1] ];
+    // Global variables
+    const visit_r = 60, visit_g = 200, visit_b = 250;
+    const path_color = new Color(200, 50, 50);
+
     // Worker specifif 
     function bound_check(x, y, w, h){
         return x>=0 && y>=0 && x<w && y<h;
     };
 
-    // Global variables
-    const visit_r = 60, visit_g = 200, visit_b = 250;
-    const path_color = new Color(200, 50, 50);
+    function get_black_dist(init_image_data){
+        const w = init_image_data.width;
+        const h = init_image_data.height;
+        const black_dist = init_2d_arr(w, h, -1);
+        bfs = new Queue(w*h, [-1,-1]);
+
+        const visit_black = function(x, y, par_dist){
+            black_dist[x][y] = par_dist + 1;
+            bfs.push([x,y]);
+        };
+
+        // black bfs
+        
+        for(let x=0; x<w; x++){
+            for(let y=0; y<h; y++){
+                if(! st_color.is_equal(get_pixel_color(init_image_data, x, y))){
+                    visit_black(x, y, -1);
+                }
+            }
+        }
+
+
+        while(!bfs.is_empty()){
+            const [x, y] = bfs.pop();
+            for(let i=0; i<diff.length; i++){
+                const curx = x + diff[i][0];
+                const cury = y + diff[i][1];
+                if(bound_check(curx, cury, w, h) && black_dist[curx][cury] === -1){
+                    // color should be st_color
+                    assert(st_color.is_equal(get_pixel_color(init_image_data, curx, cury)));
+
+                    visit_black(curx, cury, black_dist[x][y]);
+                }
+            }
+        }
+
+        return black_dist;
+
+    };
+
+   
+
+    
     
     
     const bfs_solver = function (event)
     {
         const[ init_image_data, st_px, st_py, end_px, end_py] = event.data;
         
-        console.log("Solver Called with st : ", st_px, " ", st_py, " end : ", end_px, " ", end_py );
+        console.log("BFS Solver Called with st : ", st_px, " ", st_py, " end : ", end_px, " ", end_py );
         
         w = init_image_data.width;
         h = init_image_data.height;
@@ -115,7 +161,6 @@ function worker_main(){
 
         const bfs = new Queue(w*h, [-1,-1]);
         const level = init_2d_arr(w, h, -1);
-        const diff = [ [1,0], [-1,0], [0,1], [0,-1] ];
 
         
 
@@ -182,43 +227,8 @@ function worker_main(){
 
 
         
-        const black_dist = init_2d_arr(w, h, -1);
-        bfs.clear();
-
-        const visit_black = function(x, y, par_dist){
-            black_dist[x][y] = par_dist + 1;
-            bfs.push([x,y]);
-        };
-
-        // black bfs
+        const black_dist = get_black_dist(init_image_data);
         
-        for(let x=0; x<w; x++){
-            for(let y=0; y<h; y++){
-                if(! st_color.is_equal(get_pixel_color(init_image_data, x, y))){
-                    visit_black(x, y, -1);
-                }
-            }
-        }
-
-
-        while(!bfs.is_empty()){
-            const [x, y] = bfs.pop();
-            for(let i=0; i<diff.length; i++){
-                const curx = x + diff[i][0];
-                const cury = y + diff[i][1];
-                if(bound_check(curx, cury, w, h) && black_dist[curx][cury] === -1){
-                    // color should be st_color
-                    assert(st_color.is_equal(get_pixel_color(init_image_data, curx, cury)));
-
-                    visit_black(curx, cury, black_dist[x][y]);
-                }
-            }
-        }
-
-        
-        //console.log("black_dist : ", black_dist);
-
-
         // trace the path
         // from [end_px, end_py]
         let curx = end_px, cury = end_py;
@@ -258,7 +268,17 @@ function worker_main(){
 
     }   
 
-    const dijsktra_solver = function (event){
+    const multilevel_bfs_solver = function (event){
+        
+        const[ init_image_data, st_px, st_py, end_px, end_py] = event.data;
+        
+        console.log("BFS Solver Called with st : ", st_px, " ", st_py, " end : ", end_px, " ", end_py );
+        
+        w = init_image_data.width;
+        h = init_image_data.height;
+
+        st_color = get_pixel_color(init_image_data, st_px, st_py);
+        end_color = get_pixel_color(init_image_data, end_px, end_py);
 
     }
 
