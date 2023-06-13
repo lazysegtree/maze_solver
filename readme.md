@@ -39,7 +39,8 @@ First to finish the todo.
 - [x] (A7) Reset Button
 - [ ] (A9) Red path does not overlaps the black pixels
 - [x] (A10) Avoid choosing pixels adjacent to black pixels for path
-- [ ] (A11) Set demo mazes 3
+- [ ] (D11) Set demo mazes 3
+- [ ] (A11) Add transparency in final path color
 
 
 ### Implementation : Minor
