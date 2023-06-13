@@ -3,7 +3,7 @@
 A static website to solve any maze given as an image.
 See website for usage instructions.
 
-Demo video : To be uploaded soom
+Demo video : https://youtu.be/ipHqT2WWtQQ
 Hosted Url : https://nitin12384.github.io/maze_solver/
 Website can be loaded in both desktop and mobile.
 
