@@ -203,11 +203,18 @@ function worker_main(){
                     st_color.is_equal(get_pixel_color(init_image_data, newx, newy)) && 
                     level[newx][newy] == level[curx][cury] - 1 
                 ){
-                    curx = newx;
-                    cury = newy;
-                    break;
+                    if(nextx === -1 ){
+                        nextx = newx;
+                        nexty = newy;
+                    }
+                    else if(!adj_black[newx][newy]){
+                        nextx = newx;
+                        nexty = newy;
+                    }
                 }
             }
+            curx = nextx;
+            cury = nexty;
 
         }
         
