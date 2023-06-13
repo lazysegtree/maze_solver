@@ -91,12 +91,17 @@ function worker_main(){
         }
     }
 
+    // Worker specifif 
+    function bound_check(x, y, w, h){
+        return x>=0 && y>=0 && x<w && y<h;
+    };
+
     // Global variables
     const visit_r = 60, visit_g = 200, visit_b = 250;
     const path_color = new Color(200, 50, 50);
     
     
-    onmessage = function (event)
+    const bfs_solver = function (event)
     {
         const[ init_image_data, st_px, st_py, end_px, end_py] = event.data;
         
@@ -112,9 +117,7 @@ function worker_main(){
         const level = init_2d_arr(w, h, -1);
         const diff = [ [1,0], [-1,0], [0,1], [0,-1] ];
 
-        bound_check = function(x, y){
-            return x>=0 && y>=0 && x<w && y<h;
-        };
+        
 
 
         const max_visit = w*h;
@@ -158,7 +161,7 @@ function worker_main(){
                         cury = y + diff[di][1];
 
                 // In bounds, not visited , same color as st_color
-                if(bound_check(curx, cury) && level[curx][cury] === -1){
+                if(bound_check(curx, cury, w, h) && level[curx][cury] === -1){
                     const cur_color = get_pixel_color(init_image_data, curx, cury);
                     if(st_color.is_equal(cur_color)){
                         visit(curx, cury, level[x][y]);
@@ -203,7 +206,7 @@ function worker_main(){
             for(let i=0; i<diff.length; i++){
                 const curx = x + diff[i][0];
                 const cury = y + diff[i][1];
-                if(bound_check(curx, cury) && black_dist[curx][cury] === -1){
+                if(bound_check(curx, cury, w, h) && black_dist[curx][cury] === -1){
                     // color should be st_color
                     assert(st_color.is_equal(get_pixel_color(init_image_data, curx, cury)));
 
@@ -232,7 +235,7 @@ function worker_main(){
             for(let i=0; i<diff.length; i++){
                 const   newx = curx + diff[i][0], 
                         newy = cury + diff[i][1];
-                if( bound_check(newx, newy) && 
+                if( bound_check(newx, newy, w, h) && 
                     st_color.is_equal(get_pixel_color(init_image_data, newx, newy)) && 
                     (level[newx][newy] == level[curx][cury] - 1) &&
                     black_dist[newx][newy] > mx_black_dist
@@ -254,6 +257,12 @@ function worker_main(){
         parent.postMessage(["result", "Maze solved. Traced a path from start to end."]);
 
     }   
+
+    const dijsktra_solver = function (event){
+
+    }
+
+    onmessage = bfs_solver;
 
 }
 
