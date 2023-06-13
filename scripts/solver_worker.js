@@ -91,6 +91,53 @@ function worker_main(){
         }
     }
 
+    function DS1(){
+        const parent = this;
+        parent.arr = new Array();
+
+        parent.insert = function(val){
+            //if(parent.is_empty()){
+            //    parent.arr.push(val);
+            //}
+            //else{
+                // Will also work if parent is empty
+                // insert it at correct sorted position
+            let targ_idx = 0;
+            while( targ_idx < parent.arr.length && val > parent.arr[targ_idx] ){
+                targ_idx++;
+            }
+            parent.arr =    parent.arr.slice(0, targ_idx)
+                            .concat([val])
+                            .concat(parent.arr.slice(targ_idx, parent.arr.length)); 
+            //}
+        };
+        parent.get_max = function(){
+            return parent.arr[parent.arr.length - 1];
+        };
+        parent.rem_max = function(){
+            parent.arr.pop();
+        };
+        parent.is_empty = function(){
+            return parent.arr.length === 0;
+        }
+    }
+
+    function LevelManager(mx_level, w, h){
+        const parent = this;
+
+        parent.pop = function(){
+
+        };
+
+        parent.push = function(x, y, level){
+
+        };
+
+        parent.is_empty = function(){
+            
+        }
+
+    }
     
     const diff = [ [1,0], [-1,0], [0,1], [0,-1] ];
     // Global variables
@@ -102,7 +149,7 @@ function worker_main(){
         return x>=0 && y>=0 && x<w && y<h;
     };
 
-    function get_black_dist(init_image_data){
+    function get_black_dist(init_image_data, st_color){
         const w = init_image_data.width;
         const h = init_image_data.height;
         const black_dist = init_2d_arr(w, h, -1);
@@ -142,6 +189,16 @@ function worker_main(){
 
     };
 
+    // max value should be >= 0
+    function get_max_matrix(matrix){
+        let res = 0;
+        for(let i=0; i<matrix.length; i++){
+            for(let j=0; j<matrix[i].length; j++){
+                res = max(res, matrix[i][j]);
+            }
+        }
+        return res;
+    }
    
 
     
@@ -227,7 +284,7 @@ function worker_main(){
 
 
         
-        const black_dist = get_black_dist(init_image_data);
+        const black_dist = get_black_dist(init_image_data, st_color);
         
         // trace the path
         // from [end_px, end_py]
@@ -272,13 +329,25 @@ function worker_main(){
         
         const[ init_image_data, st_px, st_py, end_px, end_py] = event.data;
         
-        console.log("BFS Solver Called with st : ", st_px, " ", st_py, " end : ", end_px, " ", end_py );
+        console.log("Multilever BFS Solver Called with st : ", st_px, " ", st_py, " end : ", end_px, " ", end_py );
         
         w = init_image_data.width;
         h = init_image_data.height;
 
         st_color = get_pixel_color(init_image_data, st_px, st_py);
-        end_color = get_pixel_color(init_image_data, end_px, end_py);
+
+        const dist = init_2d_arr(w, h, -1);
+        const black_dist = get_black_dist(init_image_data, st_color);
+        const mx_black_dist = get_max_matrix(black_dist);
+        
+        const bfs = new Array(mx_black_dist);
+        for(let i=0; i<bfs.length; i++){
+            bfs[i] = new Queue(w*h, [-1, -1]);
+        }
+
+        const level_manager = new DS1();
+
+
 
     }
 
