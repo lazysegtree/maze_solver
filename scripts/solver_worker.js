@@ -220,12 +220,10 @@ function worker_main(){
     
     
     
-    const bfs_solver = function (event)
+    const bfs_solver = function (init_image_data, st_px, st_py, end_px, end_py)
     {
-        const[ init_image_data, st_px, st_py, end_px, end_py] = event.data;
         
-        console.log("BFS Solver Called with st : ", st_px, " ", st_py, " end : ", end_px, " ", end_py );
-        
+        console.log("BFS Solver Called");
         w = init_image_data.width;
         h = init_image_data.height;
 
@@ -341,16 +339,16 @@ function worker_main(){
 
     }   
 
-    const multilevel_bfs_solver = function (event){
+    const multilevel_bfs_solver = function (init_image_data, st_px, st_py, end_px, end_py){
         
-        const[ init_image_data, st_px, st_py, end_px, end_py] = event.data;
+
         
-        console.log("Multilever BFS Solver Called with st : ", st_px, " ", st_py, " end : ", end_px, " ", end_py );
-        
+        console.log("Multilever BFS Solver Called.");
         w = init_image_data.width;
         h = init_image_data.height;
 
         st_color = get_pixel_color(init_image_data, st_px, st_py);
+        
 
         const dist = init_2d_arr(w, h, -1);
         const black_dist = get_black_dist(init_image_data, st_color);
@@ -435,7 +433,28 @@ function worker_main(){
 
     }
 
-    onmessage = multilevel_bfs_solver;
+
+    onmessage = function(event){
+        const[ init_image_data, st_px, st_py, end_px, end_py, solver_type] = event.data;
+        
+        console.log("solver_worker Called with st : ", st_px, " ", st_py, " end : ", 
+                    end_px, " ", end_py, " ", solver_type );
+        
+        
+        // Common code
+        
+
+        if(solver_type === "Plain BFS"){
+            bfs_solver(init_image_data, st_px, st_py, end_px, end_py);
+        }
+        else if(solver_type === "Level Based BFS"){
+            multilevel_bfs_solver(init_image_data, st_px, st_py, end_px, end_py);
+        }
+        else{
+            assert(false, "no valid solver");
+        }
+        
+    }
 
 }
 

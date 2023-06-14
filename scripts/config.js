@@ -17,6 +17,7 @@ const   st_pt_val_elem_x = document.getElementById("st-pt-val-x"),
 
 const thresh_inp_range = document.getElementById("thresh-selector");
 const thresh_inp_num = document.getElementById("thresh-value");
+const solver_setting_inp_elem = document.getElementById("solver-setting");
 
 const info_elem = document.getElementById("info-content");
 

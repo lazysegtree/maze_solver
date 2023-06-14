@@ -50,13 +50,16 @@ function handle_solve(){
         )
     );
 
+    const solver_type = solver_setting_inp_elem.value ;
+
     set_info("Started solving the maze.")
 
     myWorker.postMessage([ init_image_data, 
         Math.floor(Number(st_px)), 
         Math.floor(Number(st_py)), 
         Math.floor(Number(end_px)), 
-        Math.floor(Number(end_py)) ]);
+        Math.floor(Number(end_py)),
+        solver_type ]);
 
     myWorker.onmessage = function(event){
         if(event.data[0] === "set_pixel_color"){
