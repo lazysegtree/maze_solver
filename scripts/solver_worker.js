@@ -1,5 +1,5 @@
 
-
+ 
 function worker_main(){
     console.log("worker_main() run.");
     const parent = this;
