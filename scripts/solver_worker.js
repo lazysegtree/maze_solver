@@ -125,19 +125,21 @@ function worker_main(){
 
     function LevelQueue(mx_level_lim, w, h, def_val = [-1, -1]){
         const parent = this;
-        const mx_set = new MaxSet1();
-        const q = new Array(mx_level_lim + 1);
-        for(let i=0; i<q.length; i++){
+        parent.mx_set = new MaxSet1();
+        parent.q = new Array(mx_level_lim + 1);
+        for(let i=0; i<parent.q.length; i++){
             parent.q[i] = new Queue(w*h, def_val); 
         }
 
         parent.pop = function(){
-            assert(!parent.is_empty());
+            assert(!parent.is_empty(), "LevelQueue : pop() called on empty Queue.");
             const mx_level = parent.mx_set.get_max();
             const res = parent.q[mx_level].pop();
             if(parent.q[mx_level].is_empty()){
                 parent.mx_set.rem_max();
             }
+
+            return res;
         };
 
         parent.push = function(val, level){
@@ -148,7 +150,7 @@ function worker_main(){
         };
 
         parent.is_empty = function(){
-            return mx_set.is_empty();
+            return parent.mx_set.is_empty();
         }
 
     }
@@ -208,7 +210,7 @@ function worker_main(){
         let res = 0;
         for(let i=0; i<matrix.length; i++){
             for(let j=0; j<matrix[i].length; j++){
-                res = max(res, matrix[i][j]);
+                res = Math.max(res, matrix[i][j]);
             }
         }
         return res;
@@ -356,7 +358,7 @@ function worker_main(){
         
         const bfs = new LevelQueue(mx_black_dist, w, h);
 
-        assert(black_dist[st_px][st_py] > 0);
+        assert(black_dist[st_px][st_py] > 0, "Black dist from start pixel is not zero.");
 
         // hard to choose mx_dist
         const mx_dist = w*h;
@@ -416,7 +418,7 @@ function worker_main(){
                         newy = cury + diff[i][1];
                 if( bound_check(newx, newy, w, h) && 
                     st_color.is_equal(get_pixel_color(init_image_data, newx, newy)) && 
-                    (level[newx][newy] == level[curx][cury] - 1)
+                    (dist[newx][newy] == dist[curx][cury] - 1)
                 ){
                     curx = newx;
                     cury = newy;
