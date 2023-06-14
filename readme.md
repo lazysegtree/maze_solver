@@ -42,7 +42,7 @@ First to finish the todo.
 - [ ] (D11) Set demo mazes 3
 - [ ] (A11) Add transparency in final path color
 - [ ] (E1) Add dijskta based solver to make path go more in between.
- 
+- [ ] (D5) Performance optimization 
 
 ### Implementation : Minor
 

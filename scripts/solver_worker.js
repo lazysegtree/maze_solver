@@ -91,7 +91,8 @@ function worker_main(){
         }
     }
 
-    function DS1(){
+
+    function MaxSet1(){
         const parent = this;
         parent.arr = new Array();
 
@@ -122,19 +123,32 @@ function worker_main(){
         }
     }
 
-    function LevelManager(mx_level, w, h){
+    function LevelQueue(mx_level_lim, w, h, def_val = [-1, -1]){
         const parent = this;
+        const mx_set = new MaxSet1();
+        const q = new Array(mx_level_lim + 1);
+        for(let i=0; i<q.length; i++){
+            parent.q[i] = new Queue(w*h, def_val); 
+        }
 
         parent.pop = function(){
-
+            assert(!parent.is_empty());
+            const mx_level = parent.mx_set.get_max();
+            const res = parent.q[mx_level].pop();
+            if(parent.q[mx_level].is_empty()){
+                parent.mx_set.rem_max();
+            }
         };
 
-        parent.push = function(x, y, level){
-
+        parent.push = function(val, level){
+            if(parent.q[level].is_empty()){
+                parent.mx_set.insert(level);
+            }
+            parent.q[level].push(val);
         };
 
         parent.is_empty = function(){
-            
+            return mx_set.is_empty();
         }
 
     }
@@ -340,18 +354,86 @@ function worker_main(){
         const black_dist = get_black_dist(init_image_data, st_color);
         const mx_black_dist = get_max_matrix(black_dist);
         
-        const bfs = new Array(mx_black_dist);
-        for(let i=0; i<bfs.length; i++){
-            bfs[i] = new Queue(w*h, [-1, -1]);
+        const bfs = new LevelQueue(mx_black_dist, w, h);
+
+        assert(black_dist[st_px][st_py] > 0);
+
+        // hard to choose mx_dist
+        const mx_dist = w*h;
+        function visit(x, y, par_dist){
+            dist[x][y] = 1 + par_dist;
+            bfs.push([x, y], black_dist[x][y]);
+            // color
+            const b_diff = Math.floor( visit_b * (dist[x][y] / mx_dist) );
+
+            set_pixel_color(x, y, visit_r, visit_g, visit_b - b_diff);
+
+            if(x == end_px && y == end_py){
+                console.log("Reached the end");
+            }
+
+        };
+
+        visit(st_px, st_py, -1);
+
+        while(!bfs.is_empty() && dist[end_px][end_py]==-1){
+            const [x,y] = bfs.pop();
+            for(let i=0; i<diff.length; i++){
+                const   curx = x + diff[i][0],
+                        cury = y + diff[i][1];
+                
+                if( bound_check(curx, cury, w, h) && 
+                    st_color.is_equal(get_pixel_color(init_image_data, curx, cury)) &&
+                    dist[curx][cury] == -1
+                )
+                {
+                    visit(curx, cury, dist[x][y]);
+                }
+            }
         }
 
-        const level_manager = new DS1();
+        if(dist[end_px][end_py] === -1){
+            parent.postMessage(["result", "Could not find a path from start to end."]);
+            return;
+        }
+        else{
+            parent.postMessage(["result", "Maze solved. Now tracing a path from start to end."]);
+        }
 
+        // trace the path
+        // from [end_px, end_py]
+        let curx = end_px, cury = end_py;
+
+        while(curx != st_px || cury != st_py){
+            // color current pixel
+            // maybe entire 3x3 pixel space arround it as well ?
+            //console.log("Tracing : curx, cury : ", curx, " ", cury);
+            set_pixel_color(curx, cury, path_color.r, path_color.g, path_color.b, 2);
+
+            // look around and go with min level 
+            for(let i=0; i<diff.length; i++){
+                const   newx = curx + diff[i][0], 
+                        newy = cury + diff[i][1];
+                if( bound_check(newx, newy, w, h) && 
+                    st_color.is_equal(get_pixel_color(init_image_data, newx, newy)) && 
+                    (level[newx][newy] == level[curx][cury] - 1)
+                ){
+                    curx = newx;
+                    cury = newy;
+                    break;
+                }
+            }
+
+            //console.log(curx, " ", cury, " ", nextx, " ", nexty);
+
+        }
+        
+        parent.postMessage(["result", "Maze solved. Traced a path from start to end."]);
 
 
     }
 
-    onmessage = bfs_solver;
+    onmessage = multilevel_bfs_solver;
 
 }
 
