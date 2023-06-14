@@ -361,13 +361,13 @@ function worker_main(){
         assert(black_dist[st_px][st_py] > 0, "Black dist from start pixel is not zero.");
 
         // hard to choose mx_dist
-        const mx_dist = w*h;
+        const mx_dist = (w+h)*2;
         function visit(x, y, par_dist){
             dist[x][y] = 1 + par_dist;
             bfs.push([x, y], black_dist[x][y]);
             // color
-            const b_diff = Math.floor( visit_b * (dist[x][y] / mx_dist) );
-
+            const b_diff = Math.min(visit_b, Math.floor( visit_b * (dist[x][y] / mx_dist) ) );
+            
             set_pixel_color(x, y, visit_r, visit_g, visit_b - b_diff);
 
             if(x == end_px && y == end_py){
