@@ -17,9 +17,11 @@ function init(){
 
 function handle_solve(){
 
+    const debug = true;
+
     if(image_data_saved === undefined){
         set_info("Please provide and image first.");
-        return;
+        if(!debug) return;
     }
 
     const   st_px = st_pt_val_elem_x.innerHTML, st_py = st_pt_val_elem_y.innerHTML;
@@ -28,7 +30,7 @@ function handle_solve(){
     if(st_px === "" || st_py === "" || end_px === "" || end_py === ""){
         
         set_info("Select starting and ending points first.");
-        return;
+        if(!debug) return;
     }
 
     apply_thresh();
@@ -39,7 +41,7 @@ function handle_solve(){
     end_color = get_pixel_color(init_image_data, end_px, end_py);
     if( ! st_color.is_equal(end_color)){
         set_info("Start and End pixel should have same color.");
-        return;
+        if(!debug) return;
     }
 
     const myWorker = new Worker(

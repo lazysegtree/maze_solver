@@ -1,8 +1,6 @@
-importScripts("./scripts/temp.js");
-console.log("imported");
+
 function worker_main(){
     
-    console.log("tempx", tempx);
     console.log("worker_main() run.");
     const parent = this;
 
@@ -157,7 +155,115 @@ function worker_main(){
         }
 
     }
-    
+
+    function MinHeap(comparator)
+    {
+        console.warn("MinHeap may not work for objects other than arrays.");
+        const parent = this;
+        parent.cmp = comparator;
+        parent.arr = new Array();
+        parent.debug = true;
+
+        parent.get_min = function(){
+            return parent.arr[0];
+        }
+
+        parent.pop_min = function()
+        {
+            const res = parent.arr[0];
+            parent.arr[0] = parent.arr.pop(); 
+            let idx = 0;
+
+            // while has left child = while not leaf
+            while( idx*2+1 < parent.arr.length)
+            {
+                if(parent.debug) console.log("pop_min : working on idx = ", idx, " val = ", parent.arr[idx]);
+                // may not have right child
+                let lidx = idx*2+1; 
+                let ridx = idx*2+2;
+                let sm_idx = lidx; // smallest child index
+                if(ridx < parent.arr.length && parent.cmp.is_smaller(parent.arr[ridx], parent.arr[sm_idx]))
+                {
+                    sm_idx = ridx;
+                }
+
+                if(parent.cmp.is_smaller(parent.arr[idx], parent.arr[sm_idx]))
+                {
+                    // parent is smaller
+                    break;
+                }
+                else
+                {
+                    // swap
+                    [parent.arr[idx], parent.arr[sm_idx]] = [parent.arr[sm_idx], parent.arr[idx]]; 
+
+                    idx = sm_idx;
+                }
+            }
+            return res;
+        }
+
+        parent.push = function(val)
+        {
+            parent.arr.push(val);
+            let idx = parent.arr.length - 1;
+
+            while(idx>0)
+            {
+                if(parent.debug) console.log("push : working on idx = ", idx, " val = ", parent.arr[idx]);
+                // look at parent
+                let pidx = Math.floor((idx-1)/2);
+                if(parent.cmp.is_smaller(parent.arr[idx], parent.arr[pidx]))
+                {
+                    // swap
+                    [parent.arr[idx], parent.arr[pidx]] = [parent.arr[pidx], parent.arr[idx]];
+
+                    idx = pidx;
+                }   
+                else
+                {
+                    break;
+                }
+
+            }
+
+            if(parent.debug){
+                console.log("Array after insert : ", JSON.stringify(parent.arr));
+            }
+        }
+
+        parent.is_empty = function()
+        {
+            return parent.size() === 0;
+        }
+
+        parent.size = function()
+        {
+            return parent.arr.length;
+        }
+
+        parent.to_sorted_arr = function(){
+            const res = new Array();
+            while(!parent.is_empty()){
+                res.push(parent.pop_min());
+            }
+            return res;
+        }
+
+    }
+
+
+    function ScalarArrCmp()
+    {
+        const parent = this;
+        parent.is_smaller = function(arr1, arr2)
+        {
+            for(let i = 0; i < Math.min(arr1.length, arr2.length); i++){
+                if(arr1[i] !== arr2[i]) return (arr1[i] < arr2[i]);
+            }
+            return arr1.length < arr2.length;
+        }
+    }
 
 
     const diff = [ [1,0], [-1,0], [0,1], [0,-1] ];
@@ -438,6 +544,45 @@ function worker_main(){
 
     }
 
+    const dijsktra_solver = function(init_image_data, st_px, st_py, end_px, end_py){
+        
+        const BASE_EDGE_WT = 1;
+        const BLACK_WT = {
+            '-1' : 0,
+            '0' : 1,
+            '1' : 2
+        };
+        
+        console.log("Dijsktra Solver Called.");
+        w = init_image_data.width;
+        h = init_image_data.height;
+
+        st_color = get_pixel_color(init_image_data, st_px, st_py);
+        
+        const dist = init_2d_arr(w, h, -1);
+        const black_dist = get_black_dist(init_image_data, st_color);
+
+        const dj_heap = new MinHeap(new ScalarArrCmp());
+
+        
+        dist[st_px][st_py] = 0 ;
+        dj_heap.push([0, st_px, st_py]);
+
+        while(!dj_heap.is_empty()){
+            const[d, x, y] = dj_heap.pop_min();
+            if(d != dist[x][y]){
+                dj_heap.push([dist[x][y], x, y]);
+            }
+            else{
+                for(let i=0; i<diff.length ;i++){
+                    const   curx = x + diff[i][0],
+                            cury = y + diff[i][1];
+                              
+                }
+            }
+        }
+
+    }
 
     onmessage = function(event){
         const[ init_image_data, st_px, st_py, end_px, end_py, solver_type] = event.data;
@@ -455,6 +600,9 @@ function worker_main(){
         else if(solver_type === "Level Based BFS"){
             multilevel_bfs_solver(init_image_data, st_px, st_py, end_px, end_py);
         }
+        else if(solver_type === "Dijsktra"){
+            dijsktra_solver(init_image_data, st_px, st_py, end_px, end_py);
+        }
         else{
             assert(false, "no valid solver");
         }
@@ -462,7 +610,6 @@ function worker_main(){
     }
 
 }
-
 if(window != self){
     worker_main();
 }
