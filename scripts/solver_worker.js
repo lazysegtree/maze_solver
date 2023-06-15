@@ -171,6 +171,10 @@ function worker_main(){
         parent.pop_min = function()
         {
             const res = parent.arr[0];
+            if(parent.arr.length == 1){
+                parent.arr.pop();
+                return res;
+            }
             parent.arr[0] = parent.arr.pop(); 
             let idx = 0;
 
@@ -568,16 +572,41 @@ function worker_main(){
         dist[st_px][st_py] = 0 ;
         dj_heap.push([0, st_px, st_py]);
 
+        const mx_dist = (w+h) * 2;
         while(!dj_heap.is_empty()){
             const[d, x, y] = dj_heap.pop_min();
-            if(d != dist[x][y]){
+
+            console.log("d x y dist[x][y]: ", d, " " ,x, " " , y, " ", dist[x][y]);
+
+            // here you can color
+            const b_diff = Math.min(visit_b, Math.floor( visit_b * (dist[x][y] / mx_dist) ) );
+            
+            set_pixel_color(x, y, visit_r, visit_g, visit_b - b_diff);
+
+            if(d !== dist[x][y]){
+                console.log("d was wrong")
                 dj_heap.push([dist[x][y], x, y]);
             }
             else{
                 for(let i=0; i<diff.length ;i++){
                     const   curx = x + diff[i][0],
                             cury = y + diff[i][1];
-                              
+                    if( bound_check(curx, cury) &&
+                        st_color.is_equal(get_pixel_color(init_image_data, curx, cury))   
+                    )
+                    {
+                        const black_diff = black_dist[curx][cury] - black_dist[x][y];
+                        assert(black_diff >= -1 && black_diff <= 1);
+                        const edge_wt = BASE_EDGE_WT + BLACK_WT[black_diff] ;
+                        const new_dist = edge_wt + dist[x][y];
+
+                        console.log("curx, cury, new_dist", curx, " ", cury, " ", new_dist)
+                        // try to relax the 
+                        if(dist[curx][cury] == -1 || dist[curx][cury] > new_dist){
+                            dist[curx][cury] = new_dist;
+                            dj_heap.push([new_dist, curx, cury]);
+                        }
+                    }
                 }
             }
         }
