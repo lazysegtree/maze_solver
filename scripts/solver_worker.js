@@ -162,7 +162,7 @@ function worker_main(){
         const parent = this;
         parent.cmp = comparator;
         parent.arr = new Array();
-        parent.debug = true;
+        parent.debug = false;
 
         parent.get_min = function(){
             return parent.arr[0];
@@ -556,6 +556,8 @@ function worker_main(){
             '0' : 1,
             '1' : 2
         };
+
+        const BLACK_DIST_MULT = 1;
         
         console.log("Dijsktra Solver Called.");
         w = init_image_data.width;
@@ -565,18 +567,24 @@ function worker_main(){
         
         const dist = init_2d_arr(w, h, -1);
         const black_dist = get_black_dist(init_image_data, st_color);
-
+        const mx_black_dist = get_max_matrix(black_dist);
         const dj_heap = new MinHeap(new ScalarArrCmp());
 
         
         dist[st_px][st_py] = 0 ;
         dj_heap.push([0, st_px, st_py]);
 
-        const mx_dist = (w+h) * 2;
+        let mx_dist = ( (w+h) ) * (BASE_EDGE_WT * BLACK_WT[0] * BLACK_DIST_MULT * (mx_black_dist/2));
+        mx_dist = Math.floor(mx_dist);
         while(!dj_heap.is_empty()){
             const[d, x, y] = dj_heap.pop_min();
 
-            console.log("d x y dist[x][y]: ", d, " " ,x, " " , y, " ", dist[x][y]);
+            if(x == end_px && y == end_py){
+                console.log("Reached the end");
+                break;
+            }
+
+            //console.log("d x y dist[x][y]: ", d, " " ,x, " " , y, " ", dist[x][y]);
 
             // here you can color
             const b_diff = Math.min(visit_b, Math.floor( visit_b * (dist[x][y] / mx_dist) ) );
@@ -584,23 +592,24 @@ function worker_main(){
             set_pixel_color(x, y, visit_r, visit_g, visit_b - b_diff);
 
             if(d !== dist[x][y]){
-                console.log("d was wrong")
+                //console.log("d was wrong")
                 dj_heap.push([dist[x][y], x, y]);
             }
             else{
                 for(let i=0; i<diff.length ;i++){
                     const   curx = x + diff[i][0],
                             cury = y + diff[i][1];
-                    if( bound_check(curx, cury) &&
+                    if( bound_check(curx, cury, w, h) &&
                         st_color.is_equal(get_pixel_color(init_image_data, curx, cury))   
                     )
                     {
                         const black_diff = black_dist[curx][cury] - black_dist[x][y];
                         assert(black_diff >= -1 && black_diff <= 1);
-                        const edge_wt = BASE_EDGE_WT + BLACK_WT[black_diff] ;
+                        const edge_wt = BASE_EDGE_WT + BLACK_WT[black_diff] 
+                                    + (mx_black_dist - black_dist[curx][cury]) * BLACK_DIST_MULT ;
                         const new_dist = edge_wt + dist[x][y];
 
-                        console.log("curx, cury, new_dist", curx, " ", cury, " ", new_dist)
+                        //console.log("curx, cury, new_dist", curx, " ", cury, " ", new_dist)
                         // try to relax the 
                         if(dist[curx][cury] == -1 || dist[curx][cury] > new_dist){
                             dist[curx][cury] = new_dist;
@@ -610,6 +619,53 @@ function worker_main(){
                 }
             }
         }
+
+        if(dist[end_px][end_py] === -1){
+            parent.postMessage(["result", "Could not find a path from start to end."]);
+            return;
+        }
+        else{
+            parent.postMessage(["result", "Maze solved. Now tracing a path from start to end."]);
+        }
+
+        // now trace the path
+        // from [end_px, end_py]
+        let curx = end_px, cury = end_py;
+
+        while(curx != st_px || cury != st_py){
+            // color current pixel
+            // maybe entire 3x3 pixel space arround it as well ?
+            console.log("Tracing : curx, cury : ", curx, " ", cury, " dist ", dist[curx][cury]);
+            set_pixel_color(curx, cury, path_color.r, path_color.g, path_color.b, 2);
+
+            // look around and go with min level 
+            let nextx = -1, nexty = -1;
+            let min_dist = dist[curx][cury];
+            for(let i=0; i<diff.length; i++){
+                const   newx = curx + diff[i][0], 
+                        newy = cury + diff[i][1];
+                if( bound_check(newx, newy, w, h) && 
+                    st_color.is_equal(get_pixel_color(init_image_data, newx, newy)) && 
+                    (dist[newx][newy] !== -1)
+                ){
+                    console.log("newx, newy, dist ", newx, " ", newy, " ", dist[newx][newy] );
+                    if(dist[newx][newy] < min_dist){
+                        nextx = newx;
+                        nexty = newy;
+                        min_dist = dist[newx][newy];
+                    }
+                }
+            }
+            curx = nextx;
+            cury = nexty;
+
+            assert(curx != -1 && cury != -1, "Found no valid nextx and nexty");
+
+            //console.log(curx, " ", cury, " ", nextx, " ", nexty);
+
+        }
+        
+        parent.postMessage(["result", "Maze solved. Traced a path from start to end."]);
 
     }
 
