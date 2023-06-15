@@ -72,6 +72,115 @@ function Queue(max_size, def_val = 0){
 
 }
 
+function MinHeap(comparator)
+{
+    console.warn("MinHeap may not work for objects other than arrays.");
+    const parent = this;
+    parent.cmp = comparator;
+    parent.arr = new Array();
+    parent.debug = true;
+
+    parent.get_min = function(){
+        return parent.arr[0];
+    }
+
+    parent.pop_min = function()
+    {
+        const res = parent.arr[0];
+        parent.arr[0] = parent.arr.pop(); 
+        let idx = 0;
+        
+        // while has left child = while not leaf
+        while( idx*2+1 < parent.arr.length)
+        {
+            if(parent.debug) console.log("pop_min : working on idx = ", idx, " val = ", parent.arr[idx]);
+            // may not have right child
+            let lidx = idx*2+1; 
+            let ridx = idx*2+2;
+            let sm_idx = lidx; // smallest child index
+            if(ridx < parent.arr.length && parent.cmp.is_smaller(parent.arr[ridx], parent.arr[sm_idx]))
+            {
+                sm_idx = ridx;
+            }
+
+            if(parent.cmp.is_smaller(parent.arr[idx], parent.arr[sm_idx]))
+            {
+                // parent is smaller
+                break;
+            }
+            else
+            {
+                // swap
+                [parent.arr[idx], parent.arr[sm_idx]] = [parent.arr[sm_idx], parent.arr[idx]]; 
+                
+                idx = sm_idx;
+            }
+        }
+        return res;
+    }
+    
+    parent.push = function(val)
+    {
+        parent.arr.push(val);
+        let idx = parent.arr.length - 1;
+
+        while(idx>0)
+        {
+            if(parent.debug) console.log("push : working on idx = ", idx, " val = ", parent.arr[idx]);
+            // look at parent
+            let pidx = Math.floor((idx-1)/2);
+            if(parent.cmp.is_smaller(parent.arr[idx], parent.arr[pidx]))
+            {
+                // swap
+                [parent.arr[idx], parent.arr[pidx]] = [parent.arr[pidx], parent.arr[idx]];
+
+                idx = pidx;
+            }   
+            else
+            {
+                break;
+            }
+
+        }
+
+        if(parent.debug){
+            console.log("Array after insert : ", JSON.stringify(parent.arr));
+        }
+    }
+    
+    parent.is_empty = function()
+    {
+        return parent.size() === 0;
+    }
+
+    parent.size = function()
+    {
+        return parent.arr.length;
+    }
+
+    parent.to_sorted_arr = function(){
+        const res = new Array();
+        while(!parent.is_empty()){
+            res.push(parent.pop_min());
+        }
+        return res;
+    }
+
+}
+
+
+function ScalarArrCmp()
+{
+    const parent = this;
+    parent.is_smaller = function(arr1, arr2)
+    {
+        for(let i = 0; i < Math.min(arr1.length, arr2.length); i++){
+            if(arr1[i] !== arr2[i]) return (arr1[i] < arr2[i]);
+        }
+        return arr1.length < arr2.length;
+    }
+}
+
 function set_info(info){
     info_elem.innerHTML = info;
 }

@@ -13,5 +13,21 @@ function test_queue(){
     
 }
 
+function test_minheap(){
+    const h = new MinHeap(new ScalarArrCmp());
+    h.push([1,1]);
+    h.push([1,2]);
+    h.push([2,2]);
+    h.push([0,2]);
+    h.push([-1,-1]);
+    h.push([3,1]);
+    h.push([-3, 1]);
+    h.push([-2]);
+    h.push([0,0,0]);
+
+    
+
+}
+
 
 test_queue();

@@ -1,8 +1,11 @@
-
- 
+importScripts("./scripts/temp.js");
+console.log("imported");
 function worker_main(){
+    
+    console.log("tempx", tempx);
     console.log("worker_main() run.");
     const parent = this;
+
 
     // Functions 
     function assert(cond, msg = ""){
@@ -155,6 +158,8 @@ function worker_main(){
 
     }
     
+
+
     const diff = [ [1,0], [-1,0], [0,1], [0,-1] ];
     // Global variables
     const visit_r = 60, visit_g = 200, visit_b = 250;
