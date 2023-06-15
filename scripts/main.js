@@ -17,7 +17,7 @@ function init(){
 
 function handle_solve(){
 
-    const debug = true;
+    const debug = false;
 
     if(image_data_saved === undefined){
         set_info("Please provide and image first.");

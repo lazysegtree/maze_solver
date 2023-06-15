@@ -574,7 +574,7 @@ function worker_main(){
         dist[st_px][st_py] = 0 ;
         dj_heap.push([0, st_px, st_py]);
 
-        let mx_dist = ( (w+h) ) * (BASE_EDGE_WT * BLACK_WT[0] * BLACK_DIST_MULT * (mx_black_dist/2));
+        let mx_dist = ( (w+h)*2 ) * (BASE_EDGE_WT * BLACK_WT[0] * BLACK_DIST_MULT * (mx_black_dist/2));
         mx_dist = Math.floor(mx_dist);
         while(!dj_heap.is_empty()){
             const[d, x, y] = dj_heap.pop_min();
@@ -635,7 +635,7 @@ function worker_main(){
         while(curx != st_px || cury != st_py){
             // color current pixel
             // maybe entire 3x3 pixel space arround it as well ?
-            console.log("Tracing : curx, cury : ", curx, " ", cury, " dist ", dist[curx][cury]);
+            //console.log("Tracing : curx, cury : ", curx, " ", cury, " dist ", dist[curx][cury]);
             set_pixel_color(curx, cury, path_color.r, path_color.g, path_color.b, 2);
 
             // look around and go with min level 
@@ -648,7 +648,7 @@ function worker_main(){
                     st_color.is_equal(get_pixel_color(init_image_data, newx, newy)) && 
                     (dist[newx][newy] !== -1)
                 ){
-                    console.log("newx, newy, dist ", newx, " ", newy, " ", dist[newx][newy] );
+                    //console.log("newx, newy, dist ", newx, " ", newy, " ", dist[newx][newy] );
                     if(dist[newx][newy] < min_dist){
                         nextx = newx;
                         nexty = newy;
