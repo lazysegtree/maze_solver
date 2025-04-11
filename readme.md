@@ -6,7 +6,7 @@ See website for usage instructions.
 
 Demo video : https://youtu.be/ipHqT2WWtQQ
 
-Hosted Url : https://nitin12384.github.io/maze_solver/
+Hosted Url : https://lazysegtree.github.io/maze_solver/
 
 Website can be loaded in both desktop and mobile.
 
