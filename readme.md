@@ -4,11 +4,16 @@ A static website to solve any maze given as an image.
 
 See website for usage instructions.
 
-Demo video : https://youtu.be/ipHqT2WWtQQ
 
 Hosted Url : https://lazysegtree.github.io/maze_solver/
 
 Website can be loaded in both desktop and mobile.
+
+
+Demo video : https://youtu.be/ipHqT2WWtQQ
+
+Screenshot - <img width="1143" height="689" alt="image" src="https://github.com/user-attachments/assets/88ffff47-29ae-4764-819f-c3d026b8a057" />
+
 
 # Implementation
 
